@@ -12,7 +12,7 @@ def cal_per(pre, abs):
 def get_att(s, suburl):
     attDict = {"totalPresent": 0, "totalAbsent": 0, "percentage": "0%", "stillToGo": 0,
                "presentClasses": [], "absentClasses": []}
-    print(url+suburl)
+    print(url+suburl,"\n\n")
     data = s.get(url+suburl).text
     attData = BeautifulSoup(data, "html.parser")
     try:
@@ -63,7 +63,7 @@ def get_att(s, suburl):
 
 def get_cie(s, suburl):
     cieDict = {"tests": {}, "assignments": {}, "final": "-"}
-    print(url+suburl)
+    print(url+suburl,"\n\n")
     data = s.get(url+suburl).text
     cieData = BeautifulSoup(data, "html.parser")
     cieTable = cieData.find(
@@ -100,7 +100,7 @@ def set_basic_vals(data):
     final_dic["last_updated"] = data.find(
         "p", {"class": "uk-text-right cn-last-update"}).get_text().split(": ")[1]
     print(url+data.find(
-        "img", {"class": "uk-preserve-width uk-border"})["src"])
+        "img", {"class": "uk-preserve-width uk-border"})["src"], "\n\n")
     final_dic["image_url"] = url+data.find(
         "img", {"class": "uk-preserve-width uk-border"})["src"]
     return final_dic
@@ -120,15 +120,17 @@ def get_data(usn, dob):
     finalDict = set_basic_vals(data)
     if finalDict == 0:
         return {"status": "error", "reason": "Invalid creds"}
-    print(finalDict)
 
     po = s.get(dash_url)
+    with open("testdash.html", "w",encoding="UTF-8") as f:
+        f.write(po.text)
     Subjects = BeautifulSoup(po.text, "html.parser").find("table", {
         "class": "dash_even_row uk-table uk-table-striped uk-table-hover cn-pay-table uk-table-middle uk-table-responsive"})
     if Subjects == None:
         Subjects = BeautifulSoup(po.text, "html.parser").find("table", {
             "class": "dash_od_row uk-table uk-table-striped uk-table-hover cn-pay-table uk-table-middle uk-table-responsive"})
     Subjects = Subjects.find_all('tr')
+    
     for subject in Subjects[1:]:
         subDict = {}
         links = subject.find_all("td")
@@ -138,7 +140,7 @@ def get_data(usn, dob):
         curl = links[5].find("a")["href"]
         subDict["name"] = cname
         subDict["code"] = ccode
-        print("in ", cname)
+        print("in ", cname,"\n\n")
         subDict["attendence"] = get_att(s, aurl)
         subDict["cie"] = get_cie(s, curl)
         finalDict["courses"].append(subDict)
