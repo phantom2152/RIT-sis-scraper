@@ -1,5 +1,6 @@
-beautifulsoup4
-fastapi[all]
+beautifulsoup4~=4.10.0
+fastapi[all]~=0.70.0
 gunicorn
-requests
+requests~=2.26.0
 uvicorn
+starlette~=0.16.0

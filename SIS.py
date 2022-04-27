@@ -7,9 +7,11 @@ import traceback
 
 # Function to calculate percentage of attendance
 def cal_per(pre, absent) -> str:
-    percentage = round((pre / (pre + absent)) * 100)
-    return str(percentage) + "%"
-
+    try:
+        percentage = round((pre / (pre + absent)) * 100)
+        return str(percentage) + "%"
+    except ZeroDivisionError:
+        return "0%"
 
 # Function to scrape the attendance data and return a dictionary
 def get_attendance_data(s, url) -> dict:
