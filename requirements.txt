@@ -3,4 +3,4 @@ fastapi[all]~=0.70.0
 gunicorn
 requests~=2.26.0
 uvicorn
-starlette~=0.16.0
+starlette
